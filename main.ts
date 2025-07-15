@@ -10,7 +10,7 @@ inch = 2,
  */
 //% weight=10 color=#9F79EE icon="\uf1b3" block="IoT"
 //% groups='["4-Digit","Ultrasonic","Gesture","Thumbjoystick","UartWiFi"]'
-namespace IoT {
+namespace grove {
 
 
 

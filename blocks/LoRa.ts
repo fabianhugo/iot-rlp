@@ -83,7 +83,7 @@ enum ADCPins {
 
 }
 
-namespace IoT {
+namespace IotLoRaNode {
     serial.redirect(SerialPin.C17, SerialPin.C16, BaudRate.BaudRate9600); // C16/C17
     let payload = ""
 
