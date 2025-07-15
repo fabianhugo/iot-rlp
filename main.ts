@@ -1,4 +1,10 @@
-
+let distanceBackup: number = 0;
+enum DistanceUnit {
+//% block="cm"
+cm = 1,
+//% block="inch"
+inch = 2,
+};
 /**
  * Functions to operate WiFi module.
  */
@@ -50,12 +56,60 @@ namespace IoT {
     //% subcategory="WiFi"
     //% block="Wifi OK?"
     //% group="UartWiFi"
-    //% weight=30
+    //% weight=70
     export function wifiOK() {
         return isWifiConnected
     }
 
+ /**
+     * Send data to ThinkSpeak
+     */
+    //% subcategory="WiFi"
+    //% block="Send Data to your ThinkSpeak Channel|Write API Key %apiKey|Field1 %field1|Field2 %field2|Field3 %field3|Field4 %field4|Field5 %field5|Field6 %field6|Field7 %field7|Field8 %field8"
+    //% group="UartWiFi"
+    //% expandableArgumentMode="enabled"
+    //% weight=20
+    //% apiKey.defl="your Write API Key"
+    export function sendToThinkSpeak(apiKey: string, field1: number, field2: number, field3: number, field4: number, field5: number, field6: number, field7: number, field8: number) {
+        let result = 0
+        let retry = 2
 
+        // close the previous TCP connection
+        if (isWifiConnected) {
+            sendAtCmd("AT+CIPCLOSE")
+            waitAtResponse("OK", "ERROR", "None", 2000)
+        }
+
+        while (isWifiConnected && retry > 0) {
+            retry = retry - 1;
+            // establish TCP connection
+            sendAtCmd("AT+CIPSTART=\"TCP\",\"api.thingspeak.com\",80")
+            result = waitAtResponse("OK", "ALREADY CONNECTED", "ERROR", 2000)
+            if (result == 3) continue
+
+            let data = "GET /update?api_key=" + apiKey
+            if (!isNaN(field1)) data = data + "&field1=" + field1
+            if (!isNaN(field2)) data = data + "&field2=" + field2
+            if (!isNaN(field3)) data = data + "&field3=" + field3
+            if (!isNaN(field4)) data = data + "&field4=" + field4
+            if (!isNaN(field5)) data = data + "&field5=" + field5
+            if (!isNaN(field6)) data = data + "&field6=" + field6
+            if (!isNaN(field7)) data = data + "&field7=" + field7
+            if (!isNaN(field8)) data = data + "&field8=" + field8
+
+            sendAtCmd("AT+CIPSEND=" + (data.length + 2))
+            result = waitAtResponse(">", "OK", "ERROR", 2000)
+            if (result == 3) continue
+            sendAtCmd(data)
+            result = waitAtResponse("SEND OK", "SEND FAIL", "ERROR", 5000)
+
+            // // close the TCP connection
+            // sendAtCmd("AT+CIPCLOSE")
+            // waitAtResponse("OK", "ERROR", "None", 2000)
+
+            if (result == 1) break
+        }
+    }
 
     /**
        * Send data to Thingsboard
@@ -166,9 +220,7 @@ namespace IoT {
 
         }
     }
-    
-    let distanceBackup: number = 0;
-    
+
     /**
      * Create a new driver of Grove - Ultrasonic Sensor to measure distances in cm
      * @param pin signal pin of ultrasonic ranger module
@@ -180,6 +232,7 @@ namespace IoT {
     //% pin.fieldEditor="gridpicker" pin.fieldOptions.columns=4
     //% pin.fieldOptions.tooltips="false" pin.fieldOptions.width="250"
     //% group="Ultrasonic" group.loc.de="Ultraschall" pin.defl=DigitalPin.C16
+    //% subcategory="Sensoren"
     export function measureDistance(pin: DigitalPin, unit: DistanceUnit): number {
         let duration = 0;
         let range = 0;
@@ -234,20 +287,20 @@ namespace IoT {
     
     
     function Read(aht20: grove.sensors.AHT20): { Humidity: number, Temperature: number } {
-    if (!aht20.GetState().Calibrated) {
-        aht20.Initialization();
-        if (!aht20.GetState().Calibrated) return null;
-    }
+        if (!aht20.GetState().Calibrated) {
+            aht20.Initialization();
+            if (!aht20.GetState().Calibrated) return null;
+        }
 
-    aht20.TriggerMeasurement();
-    for (let i = 0; ; ++i) {
-        if (!aht20.GetState().Busy) break;
-        if (i >= 500) return null;
-        basic.pause(10);
-    }
+        aht20.TriggerMeasurement();
+        for (let i = 0; ; ++i) {
+            if (!aht20.GetState().Busy) break;
+            if (i >= 500) return null;
+            basic.pause(10);
+        }
 
-    return aht20.Read();
-}
+        return aht20.Read();
+    }
 
 
     function waitAtResponse(target1: string, target2: string, target3: string, timeout: number) {
