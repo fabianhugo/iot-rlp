@@ -1,6 +1,6 @@
 {
     "name": "IoT RLP",
-    "version": "0.1.6",
+    "version": "0.1.7",
     "description": "Package that contains WiFi, Thingsboard, Lora and more",
     "license": "MIT",
     "dependencies": {
