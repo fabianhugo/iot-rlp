@@ -83,11 +83,11 @@ enum ADCPins {
 
 }
 
-namespace IotLoRaNode {
+namespace grove {
     serial.redirect(SerialPin.C17, SerialPin.C16, BaudRate.BaudRate9600); // C16/C17
     let payload = ""
 
-    //%blockId="IotLoRaNode_InitialiseRadioOTAA" block="Initialise LoRa Radio via OTAA:|Device Eui %deveui|App Key %appkey"
+    //%blockId="grove_InitialiseRadioOTAA" block="Initialise LoRa Radio via OTAA:|Device Eui %deveui|App Key %appkey"
     //%weight=90
     //% subcategory="LoRa"
     export function InitialiseRadioOTAA(deveui: string, appkey: string): void {
@@ -140,7 +140,7 @@ namespace IotLoRaNode {
 
 
 
-    //%blockId="IotLoRaNode_DigitalValue"
+    //%blockId="grove_DigitalValue"
     //%block="Add Digital Value: %value on channel: %chanNum"
     //% subcategory="LoRa"
     export function DigitalValue(value: boolean, chanNum: Channels): void {
@@ -151,7 +151,7 @@ namespace IotLoRaNode {
         payload = payload + "0" + chanNum + "000" + intVal;
 
     }
-    //%blockId="IotLoRaNode_AnalogueValue" block="Add Analogue Value: %value on channel: %chanNum"
+    //%blockId="grove_AnalogueValue" block="Add Analogue Value: %value on channel: %chanNum"
     //% value.min=0 value.max=254
     //% subcategory="LoRa"
     export function AnalogueValue(value: number, chanNum: Channels): void {
@@ -166,7 +166,7 @@ namespace IotLoRaNode {
 
     }
 
-    //%blockId="IotLoRaNode_temperatureValue" block="Add Temperature Value: %temperatureVal to channel: %chanNum"
+    //%blockId="grove_temperatureValue" block="Add Temperature Value: %temperatureVal to channel: %chanNum"
     //% subcategory="LoRa"
     export function TemperatureValue(temperatureVal: number, chanNum: Channels): void {
         /**
@@ -180,7 +180,7 @@ namespace IotLoRaNode {
 
     }
 
-    //%blockId="IotLoRaNode_barometerValue" block="Add Barometer Value: %barometerVal to channel: %chanNum"
+    //%blockId="grove_barometerValue" block="Add Barometer Value: %barometerVal to channel: %chanNum"
     //% subcategory="LoRa"
     export function BarometerValue(barometerVal: number, chanNum: Channels): void {
         /**
@@ -194,7 +194,7 @@ namespace IotLoRaNode {
 
     }
 
-    //%blockId="IotLoRaNode_PresenceSensor"
+    //%blockId="grove_PresenceSensor"
     //%block="Add Presence Sensor: %value on channel: %chanNum"
     //% subcategory="LoRa"
     export function PresenceSensor(value: boolean, chanNum: Channels): void {
@@ -206,7 +206,7 @@ namespace IotLoRaNode {
 
     }
 
-    //%blockId="IotLoRaNode_HumidityValue" block="Add Humidity Value: %humidityVal to channel: %chanNum"
+    //%blockId="grove_HumidityValue" block="Add Humidity Value: %humidityVal to channel: %chanNum"
     //% subcategory="LoRa"
     export function HumidityValue(humidityVal: number, chanNum: Channels): void {
         /**
@@ -220,7 +220,7 @@ namespace IotLoRaNode {
 
     }
 
-    //%blockId="IotLoRaNode_AccelorometerValue" block="Add Accelerometer Value - X: %accelValX , Y: %accelValY , Z: %accelValZ ,  to channel: %hanNum"
+    //%blockId="grove_AccelorometerValue" block="Add Accelerometer Value - X: %accelValX , Y: %accelValY , Z: %accelValZ ,  to channel: %chanNum"
     //% subcategory="LoRa"
     export function AccelorometerValue(accelValX: number, accelValY: number, accelValZ: number, chanNum: Channels): void {
         /**
@@ -236,7 +236,7 @@ namespace IotLoRaNode {
     }
 
 
-    //%blockId="IotLoRaNode_LightValue" block="Add light Value: %lightVal on channel: %chanNum"
+    //%blockId="grove_LightValue" block="Add light Value: %lightVal on channel: %chanNum"
     //% subcategory="LoRa"
     export function LightValue(lightVal: number, chanNum: Channels): void {
         /**
@@ -251,7 +251,7 @@ namespace IotLoRaNode {
 
 
 
-    //%blockId="IotLoRaNode_GPS" block="Add GPS Value - Latitude: %latitude Longitude %longitude Altitude %altitude on channel: %chanNum"
+    //%blockId="grove_GPS" block="Add GPS Value - Latitude: %latitude Longitude %longitude Altitude %altitude on channel: %chanNum"
     //% subcategory="LoRa"
     export function GPS(latitude: number, longitude: number, altitude: number, chanNum: Channels): void {
         /**
@@ -274,7 +274,7 @@ namespace IotLoRaNode {
 
     }
 
-    //%blockId="IotLoRaNode_TransmitMessage" block="Transmit LoRa Data"
+    //%blockId="grove_TransmitMessage" block="Transmit LoRa Data"
     //% subcategory="LoRa"
     //%weight=80
     export function loraTransmitPayload(): void {
